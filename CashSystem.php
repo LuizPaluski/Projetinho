@@ -1,7 +1,14 @@
 <?php
 
+function TelaIncial() {
+    echo "Bem-vindo ao sistema de login e cadastro!\n";
+    echo "Escolha uma opção:\n";
+    echo "1. Login\n";
+    echo "2. Cadastro\n";
+    echo "3. Sair\n";
+}
 // Tela de login
-function Login($usuario, $senha) {
+function Login($usuario, $senha,) {
     $usuarios = [
         'admin' => '0000',
         'luiz' => '1234',
@@ -13,7 +20,6 @@ function Login($usuario, $senha) {
         return "Login não realizado, tente novamente!";
     }
 }
-
 // Tela de cadastro
 function Cadastro($usuario, $senha) {
     $usuarios = [
@@ -28,6 +34,8 @@ function Cadastro($usuario, $senha) {
         return "Usuario cadastrado com sucesso!";
     }
 }
+// Tela inicial
+echo telaIncial();
 
 // Tela de login
 echo "Digite o usuario: ";
