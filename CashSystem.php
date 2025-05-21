@@ -6,17 +6,20 @@ function TelaIncial(&$usuario, &$senha) {
     echo "2. Cadastro\n";
     echo "3. Sair\n";
     $opcao = readline("Digite sua opção: ");
-    if ($opcao == "1") {
-        $usuario = readline("Digite o usuario: \n");
-        $senha = readline("Digite sua senha: \n");
-        return Login($usuario, $senha);
-}elseif ($opcao == "2") {
-    $usuario = readline("Digite seu Usuario para cadastro: \n");
-    $senha = readline("Digite sua senha para cadastro: \n");
-    return Cadastro($usuario, $senha);
-}elseif($opcao == "3"){
-    return null; 
-}
+    switch ($opcao) {
+        case 1:
+            $usuario = readline("Digite seu usuário: ");
+            $senha = readline("Digite sua senha: ");
+            return Login($usuario, $senha);
+        case 2:
+            $usuario = readline("Digite seu usuário: ");
+            $senha = readline("Digite sua senha: ");
+            return Cadastro($usuario, $senha);
+        case 3:
+            return "Saindo do sistema...\n";
+        default:
+            return "Opção inválida! Tente novamente.\n";
+    }
 }
 // Tela de login
 function Login(&$usuario, &$senha) {
@@ -82,17 +85,23 @@ function TelaVenda($item, $preco) {
     echo "2. Registrar item\n";
     echo "3. Deslogar\n";
     $opcao = readline("Digite sua opção:\n");
-    if($opcao == 1){
-        return vender($item, $preco);
-    } elseif($opcao == 2){
-        return RegistrarProduto($item, $preco);
-    }elseif($opcao == 3){
-        return TelaIncial($usuario, $senha);
-
-
+    switch ($opcao) {
+        case 1:
+            $item = readline("Digite o produto: ");
+            $preco = readline("Digite o preço: ");
+            return Vender($item, $preco);
+        case 2:
+            $item = readline("Digite o produto: ");
+            $preco = readline("Digite o preço: ");
+            return RegistrarProduto($item, $preco);
+        case 3:
+            return "Deslogando...\n";
+        default:
+            return "Opção inválida! Tente novamente.\n";
     }
+   
 }
 // Tela inicial 
 echo telaIncial($usuario, $senha);
-
+// test
 echo TelaVenda($item, $preco);
