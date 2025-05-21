@@ -17,7 +17,6 @@ function registrarlog($mensagem) {
     $linha = "[$datahora] $mensagem" . PHP_EOL;
     file_put_contents(LOG_FILE, $linha, FILE_APPEND);
 }
-
 function exibirlog() {
     if (file_exists(LOG_FILE)) {
         echo file_get_contents(LOG_FILE);
@@ -25,7 +24,6 @@ function exibirlog() {
         echo "Nenhum log encontrado!";
     }
 }
-
 function TelaInicial(&$usuarios, &$usuariologado) {
     echo "Bem-vindo ao sistema de login e cadastro!\n";
     echo "Escolha uma opção:\n";
@@ -61,7 +59,6 @@ function TelaInicial(&$usuarios, &$usuariologado) {
 function Login($usuario, $senha, $usuarios) {
     return isset($usuarios[$usuario]) && $usuarios[$usuario] === $senha;
 }
-
 function Cadastro($usuario, $senha, &$usuarios) {
     if (isset($usuarios[$usuario])) {
         return "Usuario ja existe!\n";
@@ -130,7 +127,6 @@ function TelaVenda($usuariologado) {
     }
 }
 
-// Início do sistema
 while (true) {
     TelaInicial($usuarios, $usuariologado);
 }
