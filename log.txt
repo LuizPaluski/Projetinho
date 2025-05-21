@@ -5,3 +5,12 @@
 [21/05/2025 16:29:11] Venda: cafe por R$ 103
 [21/05/2025 17:39:38] Usuário 'admin' fez login.
 [21/05/2025 17:39:49] Usuário 'admin' vendeu 'feijao' por R$ 4.
+[21/05/2025 17:44:07] Novo usuario 'joao' cadastrado.
+[21/05/2025 17:44:12] Usuário 'joao' fez login.
+[21/05/2025 17:44:23] Usuario joao vendeu macarrao por R$ 32.
+[21/05/2025 17:45:10] Usuário 'admin' fez login.
+[21/05/2025 17:45:18] Usuario admin vendeu arroz por R$ 123.
+[21/05/2025 17:50:22] Usuário 'admin' fez login.
+[21/05/2025 17:50:31] Usuario admin vendeu arroz por R$ 4.
+[21/05/2025 17:50:39] Usuario admin vendeu macarrao por R$ 32.
+[21/05/2025 17:51:03] Usuario admin vendeu macarrao italiano 30 por R$ 30.

@@ -5,10 +5,12 @@ define("LOG_FILE", "log.txt");
 $usuarios = [
     'admin' => '0000',
     'luiz' => '1234',
+    'moacir'=> '4321',
 ];
-
 $usuariologado = null;
 $totaldeVendas = 0.0;
+$caixa = [];
+$id = 1;
 
 function registrarlog($mensagem) {
     $datahora = date("d/m/Y H:i:s");
@@ -33,7 +35,7 @@ function TelaInicial(&$usuarios, &$usuariologado) {
     $opcao = readline("Digite sua opção: ");
     switch ($opcao) {
         case 1:
-            $usuario = readline("Digite seu usuário: ");
+            $usuario = readline("Digite seu usuario: ");
             $senha = readline("Digite sua senha: ");
             if (Login($usuario, $senha, $usuarios)) {
                 $usuariologado = $usuario;
@@ -44,7 +46,7 @@ function TelaInicial(&$usuarios, &$usuariologado) {
             }
             break;
         case 2:
-            $usuario = readline("Novo usuário: ");
+            $usuario = readline("Novo usuario: ");
             $senha = readline("Senha: ");
             echo Cadastro($usuario, $senha, $usuarios);
             break;
@@ -74,9 +76,9 @@ function RegistrarProduto() {
     $item = readline("Digite o nome do produto: ");
     $preco = floatval(readline("Digite o preço do produto: "));
     $produtos = [
-        'arroz' => 5.3,
-        'feijao' => 20,
-        'cafe' => 103,
+        'arroz' => null,
+        'feijao' => null,
+        'cafe' => null,
     ];
     if (isset($produtos[$item])) {
         return "Esse produto ja existe!\n";
@@ -88,6 +90,8 @@ function RegistrarProduto() {
 
 function Vender($item, $preco, &$totaldeVendas, $usuariologado) {
     $totaldeVendas += $preco;
+    //talvez adicionar um foreach para verificar se o produto existe ou verificar id 
+    // criar uma enteracao para verificar o id dos produtos
     registrarlog("Usuario $usuariologado vendeu $item por R$ $preco.");
     return "Venda registrada!\n";
 }
