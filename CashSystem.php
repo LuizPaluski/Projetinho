@@ -66,7 +66,7 @@ function RegistrarProduto($item, $preco){
         return "Produto cadastrado! \n";
     }
 }
-function Vender($item, $preco){
+function Vender(&$item, &$preco){
     $vendas = [
         'arroz' => 20,
         'feijao' => 30,
@@ -77,13 +77,13 @@ function Vender($item, $preco){
 
     }
 }
-
 function TelaVenda($item, $preco) {
     echo "Bem-vindo ao sistema de login e cadastro!\n";
     echo "Escolha uma opção:\n";
     echo "1. Venda\n";
     echo "2. Registrar item\n";
     echo "3. Deslogar\n";
+    echo "4. Log\n";
     $opcao = readline("Digite sua opção:\n");
     switch ($opcao) {
         case 1:
@@ -91,15 +91,14 @@ function TelaVenda($item, $preco) {
             $preco = readline("Digite o preço: ");
             return Vender($item, $preco);
         case 2:
-            $item = readline("Digite o produto: ");
-            $preco = readline("Digite o preço: ");
-            return RegistrarProduto($item, $preco);
-        case 3:
-            return "Deslogando...\n";
+            return RegistrarProduto( $item, $preco);
+            case 3:
+            return TelaIncial($usuario, $senha);
         default:
             return "Opção inválida! Tente novamente.\n";
+                case 4:
+                    return "Log: \n";
     }
-   
 }
 // Tela inicial 
 echo telaIncial($usuario, $senha);
