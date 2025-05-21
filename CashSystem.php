@@ -134,3 +134,4 @@ function TelaVenda($usuariologado) {
 while (true) {
     TelaInicial($usuarios, $usuariologado);
 }
+
