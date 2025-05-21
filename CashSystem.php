@@ -1,8 +1,5 @@
 <?php
-
-$usuario = 'admin';
-$senha = '0000';
-function TelaIncial($usuario, $senha) {
+function TelaIncial(&$usuario, &$senha) {
     echo "Bem-vindo ao sistema de login e cadastro!\n";
     echo "Escolha uma opção:\n";
     echo "1. Login\n";
@@ -22,7 +19,7 @@ function TelaIncial($usuario, $senha) {
 }
 }
 // Tela de login
-function Login($usuario, $senha,) {
+function Login(&$usuario, &$senha) {
     $usuarios = [
         'admin' => '0000',
         'luiz' => '1234',
@@ -52,6 +49,7 @@ function Cadastro($usuario, $senha) {
 
 // Registrar produto
 function RegistrarProduto($item, $preco){
+    $item = readline("Digite o produto");
     $produtos = [
         'arroz' => 5.3,
         'feijao' =>20,
@@ -84,17 +82,17 @@ function TelaVenda($item, $preco) {
     echo "2. Registrar item\n";
     echo "3. Deslogar\n";
     $opcao = readline("Digite sua opção:\n");
-    if($opcao === 1){
+    if($opcao == 1){
         return vender($item, $preco);
-    } elseif($opcao === 2){
+    } elseif($opcao == 2){
         return RegistrarProduto($item, $preco);
-    }elseif($opcao === 3){
+    }elseif($opcao == 3){
+        return TelaIncial($usuario, $senha);
+
+
     }
-    }
+}
 // Tela inicial 
 echo telaIncial($usuario, $senha);
 
-
 echo TelaVenda($item, $preco);
-
-//test
