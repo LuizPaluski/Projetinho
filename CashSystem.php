@@ -2,6 +2,14 @@
 date_default_timezone_set('America/Sao_Paulo');
 define("LOG_FILE", "log.txt");
 
+$usuarios = [
+    'admin' => '0000',
+    'luiz' => '1234',
+];
+
+$usuariologado = null;
+$totaldeVendas = 0.0;
+
 function registrarlog($mensagem) {
     $datahora = date("d/m/Y H:i:s");
     $linha = "[$datahora] $mensagem" . PHP_EOL;
@@ -12,138 +20,113 @@ function exibirlog() {
     if (file_exists(LOG_FILE)) {
         echo file_get_contents(LOG_FILE);
     } else {
-        echo "Nenhum log encontrado!\n";
+        echo "Nenhum log encontrado!";
     }
 }
 
-function telaInicial() {
+function TelaInicial(&$usuarios, &$usuariologado) {
     echo "Bem-vindo ao sistema de login e cadastro!\n";
     echo "Escolha uma opção:\n";
     echo "1. Login\n";
     echo "2. Cadastro\n";
     echo "3. Sair\n";
-
     $opcao = readline("Digite sua opção: ");
-
     switch ($opcao) {
         case 1:
             $usuario = readline("Digite seu usuário: ");
             $senha = readline("Digite sua senha: ");
-            $res = login($usuario, $senha);
-            registrarlog("Tentativa de login do usuário $usuario: $res");
-            echo $res . PHP_EOL;
-            if (strpos($res, "realizado")) {
-                telaVenda();
+            if (Login($usuario, $senha, $usuarios)) {
+                $usuariologado = $usuario;
+                registrarlog("Usuário '$usuario' fez login.");
+                TelaVenda($usuariologado);
+            } else {
+                echo "Login falhou!\n";
             }
             break;
-
         case 2:
-            $usuario = readline("Digite seu usuário: ");
-            $senha = readline("Digite sua senha: ");
-            $res = cadastro($usuario, $senha);
-            registrarlog("Cadastro de usuário $usuario: $res");
-            echo $res . PHP_EOL;
+            $usuario = readline("Novo usuário: ");
+            $senha = readline("Senha: ");
+            echo Cadastro($usuario, $senha, $usuarios);
             break;
-
         case 3:
             echo "Saindo do sistema...\n";
             exit;
-
         default:
-            echo "Opção inválida! Tente novamente.\n";
-            break;
+            echo "Opção inválida!\n";
     }
 }
 
-function login($usuario, $senha) {
-    $usuarios = [
-        'admin' => '0000',
-        'luiz' => '1234',
-    ];
-
-    if (isset($usuarios[$usuario]) && $usuarios[$usuario] === $senha) {
-        return "Login realizado!";
-    } else {
-        return "Login não realizado, tente novamente!";
-    }
+function Login($usuario, $senha, $usuarios) {
+    return isset($usuarios[$usuario]) && $usuarios[$usuario] === $senha;
 }
 
-function cadastro($usuario, $senha) {
-    $usuarios = [
-        'admin' => '0000',
-        'luiz' => '1234',
-    ];
-
+function Cadastro($usuario, $senha, &$usuarios) {
     if (isset($usuarios[$usuario])) {
-        return "Usuário já existe!";
+        return "Usuario ja existe!\n";
     } else {
-        // Simulando cadastro (não persiste)
         $usuarios[$usuario] = $senha;
-        return "Usuário cadastrado com sucesso!";
+        registrarlog("Novo usuario '$usuario' cadastrado.");
+        return "Usuario cadastrado com sucesso!\n";
     }
 }
 
-function registrarProduto(&$produtos) {
+function RegistrarProduto() {
     $item = readline("Digite o nome do produto: ");
     $preco = floatval(readline("Digite o preço do produto: "));
-
-    if (isset($produtos[$item])) {
-        echo "Esse produto já existe!\n";
-    } else {
-        $produtos[$item] = $preco;
-        echo "Produto cadastrado!\n";
-        registrarlog("Produto '$item' cadastrado com preço R$ $preco");
-    }
-}
-
-function vender(&$produtos) {
-    $item = readline("Digite o produto: ");
-    $preco = floatval(readline("Digite o preço: "));
-
-    if (isset($produtos[$item]) && $produtos[$item] == $preco) {
-        echo "Venda realizada: $item por R$ $preco\n";
-        registrarlog("Venda: $item por R$ $preco");
-    } else {
-        echo "Produto não encontrado ou preço incorreto.\n";
-    }
-}
-
-function telaVenda() {
     $produtos = [
         'arroz' => 5.3,
         'feijao' => 20,
         'cafe' => 103,
     ];
+    if (isset($produtos[$item])) {
+        return "Esse produto ja existe!\n";
+    } else {
+        $produtos[$item] = $preco;
+        return "Produto cadastrado com sucesso!\n";
+    }
+}
+
+function Vender($item, $preco, &$totaldeVendas, $usuariologado) {
+    $totaldeVendas += $preco;
+    registrarlog("Usuario $usuariologado vendeu $item por R$ $preco.");
+    return "Venda registrada!\n";
+}
+
+function TelaVenda($usuariologado) {
+    global $totaldeVendas;
 
     while (true) {
-        echo "\nMenu de Vendas:\n";
-        echo "1. Vender\n";
+        echo "\nBem-vindo, $usuariologado!\n";
+        echo "Total vendido: R$ " . number_format($totaldeVendas, 2, ',', '.') . "\n";
+        echo "1. Venda\n";
         echo "2. Registrar item\n";
-        echo "3. Log\n";
-        echo "4. Sair\n";
-
+        echo "3. Deslogar\n";
+        echo "4. Ver log\n";
         $opcao = readline("Digite sua opção: ");
 
         switch ($opcao) {
             case 1:
-                vender($produtos);
+                $item = readline("Digite o produto: ");
+                $preco = floatval(readline("Digite o preço: "));
+                echo Vender($item, $preco, $totaldeVendas, $usuariologado);
                 break;
             case 2:
-                registrarProduto($produtos);
+                echo RegistrarProduto();
                 break;
             case 3:
+                registrarlog("Usuário '$usuariologado' fez logout.");
+                echo "Deslogado com sucesso!\n";
+                return;
+            case 4:
                 exibirlog();
                 break;
-            case 4:
-                echo "Saindo...\n";
-                return;
             default:
-                echo "Opção inválida!\n";
+                echo "Opção inválida! Tente novamente.\n";
         }
     }
 }
 
-// Execução inicial
+// Início do sistema
 while (true) {
-    telaInicial();
+    TelaInicial($usuarios, $usuariologado);
 }

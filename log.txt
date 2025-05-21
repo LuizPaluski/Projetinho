@@ -3,3 +3,5 @@
 [21/05/2025 16:28:20] Tentativa de login do usuário kani: Login não realizado, tente novamente!
 [21/05/2025 16:28:33] Venda: arroz por R$ 5.3
 [21/05/2025 16:29:11] Venda: cafe por R$ 103
+[21/05/2025 17:39:38] Usuário 'admin' fez login.
+[21/05/2025 17:39:49] Usuário 'admin' vendeu 'feijao' por R$ 4.
