@@ -6,6 +6,16 @@ function TelaIncial() {
     echo "1. Login\n";
     echo "2. Cadastro\n";
     echo "3. Sair\n";
+    $opcao = readline("Digite sua opção: ");
+    if ($opcao == "1") {
+        $usuario = readline("Digite o usuario: \n");
+        $senha = readline("Digite sua senha: \n");
+}elseif ($opcao == "2") {
+    $usuario = readline("Digite seu Usuario para cadastro: \n");
+    $senha = readline("Digite sua senha para cadastro: \n");
+}else {
+    return;
+}
 }
 // Tela de login
 function Login($usuario, $senha,) {
@@ -38,7 +48,7 @@ function Cadastro($usuario, $senha) {
 echo telaIncial();
 
 // Tela de login
-echo "Digite o usuario: ";
+/*echo "Digite o usuario: ";
 $usuario = readline();
 echo "Digite a senha: ";
 $senha = readline();
@@ -51,6 +61,6 @@ $usuario = readline();
 echo "Digite a senha: ";
 $senha = readline();
 $resultado = Cadastro($usuario, $senha);
-echo $resultado, PHP_EOL;
+echo $resultado, PHP_EOL;*/
 
 
