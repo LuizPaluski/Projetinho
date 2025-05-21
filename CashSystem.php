@@ -1,106 +1,149 @@
 <?php
-function TelaIncial(&$usuario, &$senha) {
+date_default_timezone_set('America/Sao_Paulo');
+define("LOG_FILE", "log.txt");
+
+function registrarlog($mensagem) {
+    $datahora = date("d/m/Y H:i:s");
+    $linha = "[$datahora] $mensagem" . PHP_EOL;
+    file_put_contents(LOG_FILE, $linha, FILE_APPEND);
+}
+
+function exibirlog() {
+    if (file_exists(LOG_FILE)) {
+        echo file_get_contents(LOG_FILE);
+    } else {
+        echo "Nenhum log encontrado!\n";
+    }
+}
+
+function telaInicial() {
     echo "Bem-vindo ao sistema de login e cadastro!\n";
     echo "Escolha uma opção:\n";
     echo "1. Login\n";
     echo "2. Cadastro\n";
     echo "3. Sair\n";
+
     $opcao = readline("Digite sua opção: ");
+
     switch ($opcao) {
         case 1:
             $usuario = readline("Digite seu usuário: ");
             $senha = readline("Digite sua senha: ");
-            return Login($usuario, $senha);
+            $res = login($usuario, $senha);
+            registrarlog("Tentativa de login do usuário $usuario: $res");
+            echo $res . PHP_EOL;
+            if (strpos($res, "realizado")) {
+                telaVenda();
+            }
+            break;
+
         case 2:
             $usuario = readline("Digite seu usuário: ");
             $senha = readline("Digite sua senha: ");
-            return Cadastro($usuario, $senha);
+            $res = cadastro($usuario, $senha);
+            registrarlog("Cadastro de usuário $usuario: $res");
+            echo $res . PHP_EOL;
+            break;
+
         case 3:
-            return "Saindo do sistema...\n";
+            echo "Saindo do sistema...\n";
+            exit;
+
         default:
-            return "Opção inválida! Tente novamente.\n";
+            echo "Opção inválida! Tente novamente.\n";
+            break;
     }
 }
-// Tela de login
-function Login(&$usuario, &$senha) {
+
+function login($usuario, $senha) {
     $usuarios = [
         'admin' => '0000',
         'luiz' => '1234',
     ];
+
     if (isset($usuarios[$usuario]) && $usuarios[$usuario] === $senha) {
-        return "Login realizado! ";
-    }
-    else {
+        return "Login realizado!";
+    } else {
         return "Login não realizado, tente novamente!";
     }
 }
-// Tela de cadastro
-function Cadastro($usuario, $senha) {
+
+function cadastro($usuario, $senha) {
     $usuarios = [
         'admin' => '0000',
         'luiz' => '1234',
     ];
+
     if (isset($usuarios[$usuario])) {
-        return "Usuario já existe!";
-    }
-    else {
+        return "Usuário já existe!";
+    } else {
+        // Simulando cadastro (não persiste)
         $usuarios[$usuario] = $senha;
-        return "Usuario cadastrado com sucesso!";
+        return "Usuário cadastrado com sucesso!";
     }
 }
 
+function registrarProduto(&$produtos) {
+    $item = readline("Digite o nome do produto: ");
+    $preco = floatval(readline("Digite o preço do produto: "));
 
-// Registrar produto
-function RegistrarProduto($item, $preco){
-    $item = readline("Digite o produto");
+    if (isset($produtos[$item])) {
+        echo "Esse produto já existe!\n";
+    } else {
+        $produtos[$item] = $preco;
+        echo "Produto cadastrado!\n";
+        registrarlog("Produto '$item' cadastrado com preço R$ $preco");
+    }
+}
+
+function vender(&$produtos) {
+    $item = readline("Digite o produto: ");
+    $preco = floatval(readline("Digite o preço: "));
+
+    if (isset($produtos[$item]) && $produtos[$item] == $preco) {
+        echo "Venda realizada: $item por R$ $preco\n";
+        registrarlog("Venda: $item por R$ $preco");
+    } else {
+        echo "Produto não encontrado ou preço incorreto.\n";
+    }
+}
+
+function telaVenda() {
     $produtos = [
         'arroz' => 5.3,
-        'feijao' =>20,
+        'feijao' => 20,
         'cafe' => 103,
     ];
-    if (isset($produtos[$item]) && $produtos[$item] == $preco) {
-        return "Esse produto ja existe! \n";
 
-    }else {
-        $produtos[$item] = $preco;
-        return "Produto cadastrado! \n";
-    }
-}
-function Vender(&$item, &$preco){
-    $vendas = [
-        'arroz' => 20,
-        'feijao' => 30,
-        
-    ];
-    if(isset($vendas[$item]) && $vendas[$item] === $preco){
-        return $vendas[$item];
+    while (true) {
+        echo "\nMenu de Vendas:\n";
+        echo "1. Vender\n";
+        echo "2. Registrar item\n";
+        echo "3. Log\n";
+        echo "4. Sair\n";
 
-    }
-}
-function TelaVenda($item, $preco) {
-    echo "Bem-vindo ao sistema de login e cadastro!\n";
-    echo "Escolha uma opção:\n";
-    echo "1. Venda\n";
-    echo "2. Registrar item\n";
-    echo "3. Deslogar\n";
-    echo "4. Log\n";
-    $opcao = readline("Digite sua opção:\n");
-    switch ($opcao) {
-        case 1:
-            $item = readline("Digite o produto: ");
-            $preco = readline("Digite o preço: ");
-            return Vender($item, $preco);
-        case 2:
-            return RegistrarProduto( $item, $preco);
+        $opcao = readline("Digite sua opção: ");
+
+        switch ($opcao) {
+            case 1:
+                vender($produtos);
+                break;
+            case 2:
+                registrarProduto($produtos);
+                break;
             case 3:
-            return TelaIncial($usuario, $senha);
-        default:
-            return "Opção inválida! Tente novamente.\n";
-                case 4:
-                    return "Log: \n";
+                exibirlog();
+                break;
+            case 4:
+                echo "Saindo...\n";
+                return;
+            default:
+                echo "Opção inválida!\n";
+        }
     }
 }
-// Tela inicial 
-echo telaIncial($usuario, $senha);
-// test
-echo TelaVenda($item, $preco);
+
+// Execução inicial
+while (true) {
+    telaInicial();
+}

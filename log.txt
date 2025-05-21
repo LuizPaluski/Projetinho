@@ -1,0 +1,5 @@
+[21/05/2025 16:26:44] Tentativa de login do usuário admin: Login realizado!
+[21/05/2025 16:28:13] Cadastro de usuário kani: Usuário cadastrado com sucesso!
+[21/05/2025 16:28:20] Tentativa de login do usuário kani: Login não realizado, tente novamente!
+[21/05/2025 16:28:33] Venda: arroz por R$ 5.3
+[21/05/2025 16:29:11] Venda: cafe por R$ 103
