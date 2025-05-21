@@ -1,5 +1,7 @@
 <?php
 
+$usuario = 'admin';
+$senha = '0000';
 function TelaIncial($usuario, $senha) {
     echo "Bem-vindo ao sistema de login e cadastro!\n";
     echo "Escolha uma opção:\n";
@@ -47,13 +49,13 @@ function Cadastro($usuario, $senha) {
     }
 }
 
+
 // Registrar produto
 function RegistrarProduto($item, $preco){
     $produtos = [
         'arroz' => 5.3,
         'feijao' =>20,
         'cafe' => 103,
-
     ];
     if (isset($produtos[$item]) && $produtos[$item] == $preco) {
         return "Esse produto ja existe! \n";
@@ -63,9 +65,6 @@ function RegistrarProduto($item, $preco){
         return "Produto cadastrado! \n";
     }
 }
-
-
-
 function Vender($item, $preco){
     $vendas = [
         'arroz' => 20,
@@ -77,11 +76,25 @@ function Vender($item, $preco){
 
     }
 }
-    
+
+function TelaVenda($item, $preco) {
+    echo "Bem-vindo ao sistema de login e cadastro!\n";
+    echo "Escolha uma opção:\n";
+    echo "1. Venda\n";
+    echo "2. Registrar item\n";
+    echo "3. Deslogar\n";
+    $opcao = readline("Digite sua opção:\n");
+    if($opcao === 1){
+        return vender($item, $preco);
+    } elseif($opcao === 2){
+        return RegistrarProduto($item, $preco);
+    }elseif($opcao === 3){
+    }
+    }
 // Tela inicial 
 echo telaIncial($usuario, $senha);
 
-//test
 
-$item = readline("Digite o produto:\n");
-echo RegistrarProduto($item, $preco);
+echo TelaVenda($item, $preco);
+
+//test
