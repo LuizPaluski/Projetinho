@@ -14,13 +14,6 @@ function Login($usuario, $senha) {
     }
 }
 
-echo "Digite o usuario: ";
-$usuario = readline();
-echo "Digite a senha: ";
-$senha = readline();
-$resultado = Login($usuario, $senha);
-echo $resultado, PHP_EOL;
-
 // Tela de cadastro
 function Cadastro($usuario, $senha) {
     $usuarios = [
@@ -35,6 +28,16 @@ function Cadastro($usuario, $senha) {
         return "Usuario cadastrado com sucesso!";
     }
 }
+
+// Tela de login
+echo "Digite o usuario: ";
+$usuario = readline();
+echo "Digite a senha: ";
+$senha = readline();
+$resultado = Login($usuario, $senha);
+echo $resultado, PHP_EOL;
+
+//Cadastro
 echo "Digite o usuario: ";
 $usuario = readline();  
 echo "Digite a senha: ";
@@ -42,4 +45,4 @@ $senha = readline();
 $resultado = Cadastro($usuario, $senha);
 echo $resultado, PHP_EOL;
 
-//deslogar
+
