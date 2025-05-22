@@ -70,19 +70,22 @@ function Cadastro($usuario, $senha, &$usuarios) {
 }
 
 function RegistrarProduto() {
+    global $produtos, $id;
     $item = readline("Digite o nome do produto: ");
     $preco = floatval(readline("Digite o preço do produto: "));
-    $produtos = [
-        'arroz' => null,
-        'feijao' => null,
-        'cafe' => null,
-    ];
-    if (isset($produtos[$item])) {
-        return "Esse produto ja existe!\n";
-    } else {
-        $produtos[$item] = $preco;
-        return "Produto cadastrado com sucesso!\n";
+    foreach ($produtos as $produto) {
+        if ($produto['nome'] === $item) {
+            return "Esse produto já está cadastrado!\n";
+        }
     }
+    $produtos[$id] = [
+        'nome' => $item,
+        'preco' => $preco
+    ];
+    echo "Produto cadastrado com sucesso! ID: $id\n";
+    $id++;
+    return "";
+
 }
 
 function Vender($item, $preco, &$totaldeVendas, $usuariologado) {
