@@ -10,11 +10,7 @@ $usuarios = [
 $usuariologado = null;
 $totaldeVendas = 0.0;
 $caixa = [];
-$produtos= [
-    'arroz'=> '12',
-    'feijao'=> '10',
-    'cafe'=> '1200',
-];
+$produtos= [];
 $produtos = [];
 $id = 1;
 
