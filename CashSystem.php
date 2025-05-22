@@ -77,7 +77,7 @@ function Cadastro($usuario, $senha, &$usuarios) {
 function RegistrarProduto(&$produtos, &$id) {
     $nome = readline("Digite o nome do produto: ");
     $preco = readline("Digte o preco do produto: ");
-    $estoque = readline("Quantos produtos foram adicionados: ");
+    $estoque = (int)readline("Quantos produtos foram adicionados: ");
     $produtos[$id++] = [
         "nome"=> $nome,
         "preco"=> $preco,
@@ -87,13 +87,15 @@ function RegistrarProduto(&$produtos, &$id) {
     return "ID do produto cadastrado e $id\n";
 }
 
-function Vender($item, $preco, &$totaldeVendas, $usuariologado, &$caixa, &$quantiade) {
+function Vender(&$id) {
      system('clear');
-    $totaldeVendas += $preco;
-    $total = $preco * $quantiade;
-    $caixa -= $preco;
-    registrarlog("Usuario $usuariologado vendeu $item por R$ $total,");
-    return "Venda registrada!\n";
+     $id = (int)readline("Digite o ID do produto: \n" );
+     if(isset($id)) {
+        return "Produto ventido"; 
+    }else("");{
+        return "Produto nao existe";
+    }
+     
 }
 
 
@@ -111,10 +113,7 @@ function TelaVenda($usuariologado) {
 
         switch ($opcao) {
             case 1:
-                $item = readline("Digite o produto: ");
-                $quantidade = readline("Digite a quantidade");
-                $preco = floatval(readline("Digite o preço: "));
-                echo Vender($item, $preco, $totaldeVendas, $usuariologado, $caixa, $quantidade);
+                echo Vender($id);
                 break;
             case 2:
                 echo RegistrarProduto($produtos, $id);
