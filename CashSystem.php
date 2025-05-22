@@ -10,6 +10,11 @@ $usuarios = [
 $usuariologado = null;
 $totaldeVendas = 0.0;
 $caixa = [];
+$produtos= [
+    'arroz'=> '12',
+    'feijao'=> '10',
+    'cafe'=> '1200',
+];
 $id = 1;
 
 function registrarlog($mensagem) {
@@ -88,12 +93,17 @@ function RegistrarProduto() {
 
 }
 
-function Vender($item, $preco, &$totaldeVendas, $usuariologado) {
-    $totaldeVendas += $preco;
-    //talvez adicionar um foreach para verificar se o produto existe ou verificar id 
-    // criar uma enteracao para verificar o id dos produtos
-    registrarlog("Usuario $usuariologado vendeu $item por R$ $preco.");
-    return "Venda registrada!\n";
+function Vender($id, &$totaldeVendas, $usuariologado) {
+   global $produtos;
+   if(!isset($produtos[$id])) {
+    return "Produto nao encontrado\n";
+   }
+   $nome = $produtos[$id]["nome"];
+   $valor = $produtos[$id]["preco"];
+   $totaldeVendas += $valor;
+   registrarlog("$usuariologado Vendeu $nome por R$ $valor");
+   return "Venda registrada\n";
+
 }
 
 function TelaVenda($usuariologado) {
@@ -110,9 +120,8 @@ function TelaVenda($usuariologado) {
 
         switch ($opcao) {
             case 1:
-                $item = readline("Digite o produto: ");
-                $preco = floatval(readline("Digite o preço: "));
-                echo Vender($item, $preco, $totaldeVendas, $usuariologado);
+                $id = readline("Digite o ID do produto: ");
+                echo Vender($id, $totaldeVendas, $usuariologado);
                 break;
             case 2:
                 echo RegistrarProduto();
