@@ -45,8 +45,6 @@ function Cadastro($usuario, $senha) {
         return "Usuario cadastrado com sucesso!";
     }
 }
-
-
 // Registrar produto
 function RegistrarProduto($item, $preco){
     $item = readline("Digite o produto");
@@ -74,7 +72,6 @@ function Vender($item, $preco){
 
     }
 }
-
 function TelaVenda($item, $preco) {
     echo "Bem-vindo ao sistema de login e cadastro!\n";
     echo "Escolha uma opção:\n";
@@ -88,11 +85,9 @@ function TelaVenda($item, $preco) {
         return RegistrarProduto($item, $preco);
     }elseif($opcao == 3){
         return TelaIncial($usuario, $senha);
-
-
     }
 }
 // Tela inicial 
 echo telaIncial($usuario, $senha);
 
-echo TelaVenda($item, $preco);
+echo TelaVenda($item, $preco);s
