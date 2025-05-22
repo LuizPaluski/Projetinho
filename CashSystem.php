@@ -10,6 +10,11 @@ $usuarios = [
 $usuariologado = null;
 $totaldeVendas = 0.0;
 $caixa = [];
+$produtos= [
+    'arroz'=> '12',
+    'feijao'=> '10',
+    'cafe'=> '1200',
+];
 $produtos = [];
 $id = 1;
 
@@ -74,30 +79,38 @@ function Cadastro($usuario, $senha, &$usuarios) {
     }
 }
 
-function RegistrarProduto(&$produtos, &$id) {
-    $nome = readline("Digite o nome do produto: ");
-    $preco = readline("Digte o preco do produto: ");
-    $estoque = (int)readline("Quantos produtos foram adicionados: ");
-    $produtos[$id++] = [
-        "nome"=> $nome,
-        "preco"=> $preco,
-        "estoque"=> $estoque
-    ];
-    registrarlog("Produto $nome, registrado");
-    return "ID do produto cadastrado e $id\n";
-}
-
-function Vender(&$id) {
-     system('clear');
-     $id = (int)readline("Digite o ID do produto: \n" );
-     if(isset($id)) {
-        return "Produto ventido"; 
-    }else("");{
-        return "Produto nao existe";
+function RegistrarProduto() {
+    system("clear");
+    global $produtos, $id;
+    $item = readline("Digite o nome do produto: ");
+    $preco = floatval(readline("Digite o preço do produto: "));
+    foreach ($produtos as $produto) {
+        if ($produto['nome'] === $item) {
+            return "Esse produto já está cadastrado!\n";
+        }
     }
-     
+    $produtos[$id] = [
+        'nome' => $item,
+        'preco' => $preco
+    ];
+    echo "Produto cadastrado com sucesso! ID: $id\n";
+    $id++;
+    return "";
+
 }
 
+function Vender($id, &$totaldeVendas, $usuariologado) {
+   global $produtos;
+   if(!isset($produtos[$id])) {
+    return "Produto nao encontrado\n";
+   }
+   $nome = $produtos[$id]["nome"];
+   $valor = $produtos[$id]["preco"];
+   $totaldeVendas += $valor;
+   registrarlog("$usuariologado Vendeu $nome por R$ $valor");
+   return "Venda registrada\n";
+
+}
 
 function TelaVenda($usuariologado) {
      system('clear');
@@ -113,10 +126,11 @@ function TelaVenda($usuariologado) {
 
         switch ($opcao) {
             case 1:
-                echo Vender($id);
+                $id = readline("Digite o ID do produto: ");
+                echo Vender($id, $totaldeVendas, $usuariologado);
                 break;
             case 2:
-                echo RegistrarProduto($produtos, $id);
+                echo RegistrarProduto();
                 break;
             case 3:
                 registrarlog("Usuário '$usuariologado' fez logout.");
