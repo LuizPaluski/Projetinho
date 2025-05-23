@@ -142,14 +142,13 @@ function Vender($id, &$totaldeVendas, $usuariologado, &$estoque) {
    global $produtos;
    if(!isset($produtos[$id])) {
     return "Produto nao encontrado\n";
-   }elseif(!isset($estoque[$id])){
-    return "Produto sem estoque\n";
+   }elseif(!isset($produtos[$id]["estoque"]) || $produtos[$id]["estoque"] <= 0) {
+    return "Produto fora de estoque\n";
    }
    $nome = $produtos[$id]["nome"];
    $valor = $produtos[$id]["preco"];
-   $estoque = $produtos[$id]["estoque"];
+   $estoque = $produtos[$id]["estoque"]--;
    $totaldeVendas += $valor;
-   $estoque --;
       registrarlog("$usuariologado Vendeu $nome por R$ $valor, estoque $estoque");
    return "Venda registrada\n";
 }
