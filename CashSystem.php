@@ -83,7 +83,7 @@ function RegistrarProduto() {
     global $produtos, $id, $estoque,$usuariologado;
     $item = readline("Digite o nome do produto: ");
     $preco = floatval(readline("Digite o preço do produto: "));
-    $estoque = floatval(readline("Digite o estoque do item: "));
+    $estoque = (int)readline("Digite o estoque do item: ");
     foreach ($produtos as $produto) {
         if ($produto['nome'] === $item) {
             return "Esse produto já está cadastrado!\n";
@@ -95,7 +95,7 @@ function RegistrarProduto() {
         'estoque' => $estoque
     ];
     echo "Produto cadastrado com sucesso! ID: $id\n";
-    registrarlog("$usuariologado registrou $estoque $item, por $preco");
+    registrarlog("$usuariologado registrou $estoque $item, por R$ $preco");
     $id++;
     return;
 
@@ -142,13 +142,15 @@ function Vender($id, &$totaldeVendas, $usuariologado, &$estoque) {
    global $produtos;
    if(!isset($produtos[$id])) {
     return "Produto nao encontrado\n";
+   }elseif(!isset($estoque[$id])){
+    return "Produto sem estoque\n";
    }
    $nome = $produtos[$id]["nome"];
    $valor = $produtos[$id]["preco"];
    $estoque = $produtos[$id]["estoque"];
    $totaldeVendas += $valor;
-   $estoque - 1;
-      registrarlog("$usuariologado Vendeu $nome por R$ $valor");
+   $estoque --;
+      registrarlog("$usuariologado Vendeu $nome por R$ $valor, estoque $estoque");
    return "Venda registrada\n";
 }
 function TelaVenda() {
