@@ -9,7 +9,7 @@ $usuarios = [
 ];
 $usuariologado = null;
 $totaldeVendas = 0.0;
-$caixa = [];
+$estoque = 0;
 $produtos= [];
 $id = 1;
 function registrarlog($mensagem) {
@@ -24,8 +24,9 @@ function exibirlog() {
     } else {
         echo "Nenhum log encontrado!";
     }
+return TelaVenda();
 }
-function TelaInicial(&$usuarios, &$usuariologado, &$totaldeVendas) {
+function TelaInicial(&$usuarios, &$usuariologado) {
     echo "Bem-vindo ao sistema de login e cadastro!\n";
     echo "Escolha uma opcao:\n";
     echo "1. Login\n";
@@ -79,9 +80,10 @@ function Cadastro($usuario, $senha, &$usuarios) {
 }
 function RegistrarProduto() {
     system("clear");
-    global $produtos, $id;
+    global $produtos, $id, $estoque,$usuariologado;
     $item = readline("Digite o nome do produto: ");
     $preco = floatval(readline("Digite o preço do produto: "));
+    $estoque = floatval(readline("Digite o estoque do item: "));
     foreach ($produtos as $produto) {
         if ($produto['nome'] === $item) {
             return "Esse produto já está cadastrado!\n";
@@ -89,14 +91,15 @@ function RegistrarProduto() {
     }
     $produtos[$id] = [
         'nome' => $item,
-        'preco' => $preco
+        'preco' => $preco,
+        'estoque' => $estoque
     ];
     echo "Produto cadastrado com sucesso! ID: $id\n";
+    registrarlog("$usuariologado registrou $estoque $item, por $preco");
     $id++;
     return;
 
 }
-
 function AlterarOuDeletarProduto() {
     system('clear');
     global $produtos;
@@ -105,7 +108,6 @@ function AlterarOuDeletarProduto() {
         echo "Produto não encontrado!\n";
         return;
     }
-
     echo "1. Alterar nome\n";
     echo "2. Alterar preço\n";
     echo "3. Alterar estoque\n";
@@ -135,7 +137,7 @@ function AlterarOuDeletarProduto() {
             echo "Opção inválida!\n";
     }
 }
-function Vender($id, &$totaldeVendas, $usuariologado) {
+function Vender($id, &$totaldeVendas, $usuariologado, &$estoque) {
     system('clear');
    global $produtos;
    if(!isset($produtos[$id])) {
@@ -143,14 +145,14 @@ function Vender($id, &$totaldeVendas, $usuariologado) {
    }
    $nome = $produtos[$id]["nome"];
    $valor = $produtos[$id]["preco"];
+   $estoque = $produtos[$id]["estoque"];
    $totaldeVendas += $valor;
-   registrarlog("$usuariologado Vendeu $nome por R$ $valor");
+   $estoque - 1;
+      registrarlog("$usuariologado Vendeu $nome por R$ $valor");
    return "Venda registrada\n";
-
 }
-function TelaVenda($usuariologado) {
-     system('clear');
-    global $totaldeVendas;
+function TelaVenda() {
+    global $totaldeVendas, $usuariologado;
     while (true) {
         echo "Bem-vindo, $usuariologado!\n";
         echo "Total vendido: R$ " . number_format($totaldeVendas, 2, ',', '.') . "\n";
@@ -160,11 +162,10 @@ function TelaVenda($usuariologado) {
         echo "4. Ver log\n";
         echo "5. Alterar ou deletar produto\n";
         $opcao = readline("Digite sua opção: ");
-
         switch ($opcao) {
             case 1:
                 $id = readline("Digite o ID do produto: ");
-                echo Vender($id, $totaldeVendas, $usuariologado);
+                echo Vender($id, $totaldeVendas, $usuariologado, $estoque);
                 break;
             case 2:
                 echo RegistrarProduto();
@@ -175,6 +176,7 @@ function TelaVenda($usuariologado) {
                 return;
             case 4:
                 exibirlog();
+                return;
             case 5:
                 echo AlterarOuDeletarProduto();
                 break;
@@ -184,5 +186,5 @@ function TelaVenda($usuariologado) {
     }
 }
 while (true) {
-    TelaInicial($usuarios, $usuariologado, $totaldeVendas);
+    TelaInicial($usuarios, $usuariologado);
 }
