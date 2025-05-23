@@ -62,7 +62,7 @@ function caixa($usuariologado){
     system("clear");
     $dimdim = readline("Quantos R$ tem no caixa: ");
     $totaldeVendas += $dimdim;
-    return TelaVenda($usuariologado);
+    return TelaVenda();
 }
 function Login($usuario, $senha, $usuarios) {
     system('clear');
@@ -142,9 +142,9 @@ function Vender($id, &$totaldeVendas, $usuariologado, &$estoque) {
    global $produtos;
    if(!isset($produtos[$id])) {
     return "Produto nao encontrado\n";
-   }elseif(!isset($produtos[$id]["estoque"]) || $produtos[$id]["estoque"] <= 0) {
-    return "Produto fora de estoque\n";
-   }
+   } if ($produtos[$id]["estoque"] <= 0) {
+         return "Produto fora de estoque\n";
+    }
    $nome = $produtos[$id]["nome"];
    $valor = $produtos[$id]["preco"];
    $estoque = $produtos[$id]["estoque"]--;
