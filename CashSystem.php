@@ -15,7 +15,7 @@ $id = 1;
 function registrarlog($mensagem) {
     $datahora = date("d/m/Y H:i:s");
     $linha = "$datahora, $mensagem" . PHP_EOL;
-    file_put_contents(LOG_FILE, data: $linha, flags: FILE_APPEND);
+    file_put_contents(LOG_FILE, $linha, FILE_APPEND);
 }
 function exibirlog() {
      system('clear');
@@ -26,7 +26,6 @@ function exibirlog() {
     }
 }
 function TelaInicial(&$usuarios, &$usuariologado, &$totaldeVendas) {
-    system('clear');
     echo "Bem-vindo ao sistema de login e cadastro!\n";
     echo "Escolha uma opcao:\n";
     echo "1. Login\n";
@@ -57,7 +56,6 @@ function TelaInicial(&$usuarios, &$usuariologado, &$totaldeVendas) {
             echo "Opcao invalida!\n";
     }
 }
-
 function caixa($usuariologado){
     global $totaldeVendas;
     system("clear");
