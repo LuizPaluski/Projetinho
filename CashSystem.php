@@ -1,5 +1,5 @@
 <?php
-date_default_timezone_set('America/Sao_Paulo');
+date_default_timezone_set( 'America/Sao_Paulo');
 define("LOG_FILE", "logmercado.txt");
 
 $usuarios = [
@@ -15,7 +15,7 @@ $id = 1;
 function registrarlog($mensagem) {
     $datahora = date("d/m/Y H:i:s");
     $linha = "$datahora, $mensagem" . PHP_EOL;
-    file_put_contents(LOG_FILE, $linha, FILE_APPEND);
+    file_put_contents(LOG_FILE, data: $linha, flags: FILE_APPEND);
 }
 function exibirlog() {
      system('clear');
@@ -25,8 +25,8 @@ function exibirlog() {
         echo "Nenhum log encontrado!";
     }
 }
-function TelaInicial(&$usuarios, &$usuariologado) {
-    
+function TelaInicial(&$usuarios, &$usuariologado, &$totaldeVendas) {
+    system('clear');
     echo "Bem-vindo ao sistema de login e cadastro!\n";
     echo "Escolha uma opcao:\n";
     echo "1. Login\n";
@@ -40,7 +40,7 @@ function TelaInicial(&$usuarios, &$usuariologado) {
             if (Login($usuario, $senha, $usuarios)) {
                 $usuariologado = $usuario;
                 registrarlog("Usuário '$usuario' fez login.");
-                TelaVenda($usuariologado);
+                caixa( $usuariologado);
             } else {
                 echo "Login falhou!\n";
             }
@@ -56,6 +56,14 @@ function TelaInicial(&$usuarios, &$usuariologado) {
         default:
             echo "Opcao invalida!\n";
     }
+}
+
+function caixa($usuariologado){
+    global $totaldeVendas;
+    system("clear");
+    $dimdim = readline("Quantos R$ tem no caixa: ");
+    $totaldeVendas += $dimdim;
+    return TelaVenda($usuariologado);
 }
 function Login($usuario, $senha, $usuarios) {
     system('clear');
@@ -92,6 +100,7 @@ function RegistrarProduto() {
 }
 
 function AlterarOuDeletarProduto() {
+    system('clear');
     global $produtos;
     $id = readline("Digite o ID do produto a alterar/deletar: ");
     if (!isset($produtos[$id])) {
@@ -129,6 +138,7 @@ function AlterarOuDeletarProduto() {
     }
 }
 function Vender($id, &$totaldeVendas, $usuariologado) {
+    system('clear');
    global $produtos;
    if(!isset($produtos[$id])) {
     return "Produto nao encontrado\n";
@@ -176,5 +186,5 @@ function TelaVenda($usuariologado) {
     }
 }
 while (true) {
-    TelaInicial($usuarios, $usuariologado);
+    TelaInicial($usuarios, $usuariologado, $totaldeVendas);
 }
